@@ -1,0 +1,1108 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Imputación Objetiva - Resumen Interactivo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .nav-tabs {
+            display: flex;
+            background: #f8f9fa;
+            border-bottom: 3px solid #667eea;
+            overflow-x: auto;
+        }
+
+        .nav-tab {
+            padding: 15px 25px;
+            cursor: pointer;
+            border: none;
+            background: none;
+            font-size: 16px;
+            font-weight: 600;
+            color: #555;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+
+        .nav-tab:hover {
+            background: #e9ecef;
+            color: #667eea;
+        }
+
+        .nav-tab.active {
+            background: #667eea;
+            color: white;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section {
+            margin-bottom: 30px;
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            border-left: 5px solid #667eea;
+        }
+
+        .section h2 {
+            color: #1e3c72;
+            margin-bottom: 15px;
+            font-size: 1.8em;
+        }
+
+        .section h3 {
+            color: #2a5298;
+            margin: 20px 0 10px 0;
+            font-size: 1.4em;
+        }
+
+        .card {
+            background: white;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+        }
+
+        .ejemplo {
+            background: #e7f3ff;
+            border-left: 4px solid #2196F3;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 8px;
+        }
+
+        .ejemplo h4 {
+            color: #1565C0;
+            margin-bottom: 10px;
+        }
+
+        .importante {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 8px;
+        }
+
+        .concepto-clave {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 8px;
+        }
+
+        .definicion {
+            background: #e8f4f8;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+            border: 2px dashed #17a2b8;
+        }
+
+        .lista-puntos {
+            margin: 15px 0;
+            padding-left: 20px;
+        }
+
+        .lista-puntos li {
+            margin: 10px 0;
+            padding-left: 10px;
+        }
+
+        .quiz-container {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 15px;
+            margin: 20px 0;
+        }
+
+        .quiz-pregunta {
+            background: white;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+
+        .quiz-opcion {
+            padding: 12px;
+            margin: 8px 0;
+            background: #f8f9fa;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+
+        .quiz-opcion:hover {
+            background: #e9ecef;
+            border-color: #667eea;
+        }
+
+        .quiz-opcion.correcta {
+            background: #d4edda;
+            border-color: #28a745;
+        }
+
+        .quiz-opcion.incorrecta {
+            background: #f8d7da;
+            border-color: #dc3545;
+        }
+
+        .respuesta {
+            display: none;
+            margin-top: 15px;
+            padding: 15px;
+            background: #e7f3ff;
+            border-radius: 8px;
+            border-left: 4px solid #2196F3;
+        }
+
+        .btn-mostrar {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-top: 10px;
+            transition: all 0.3s;
+        }
+
+        .btn-mostrar:hover {
+            background: #5568d3;
+            transform: scale(1.05);
+        }
+
+        .esquema {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .nivel-1 {
+            font-weight: bold;
+            color: #1e3c72;
+            font-size: 1.2em;
+            margin: 15px 0;
+        }
+
+        .nivel-2 {
+            color: #2a5298;
+            margin-left: 20px;
+            margin: 10px 0 10px 20px;
+        }
+
+        .nivel-3 {
+            color: #555;
+            margin-left: 40px;
+            margin: 8px 0 8px 40px;
+        }
+
+        .diagrama {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin: 20px 0;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .flecha {
+            font-size: 2em;
+            color: #667eea;
+            margin: 10px 0;
+        }
+
+        .caja-concepto {
+            background: #667eea;
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 10px auto;
+            max-width: 300px;
+            font-weight: bold;
+        }
+
+        .footer {
+            background: #1e3c72;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+            
+            .nav-tab {
+                font-size: 14px;
+                padding: 12px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📚 Imputación Objetiva</h1>
+            <p>Determinación de la Conducta Prohibida - Derecho Penal</p>
+        </div>
+
+        <div class="nav-tabs">
+            <button class="nav-tab active" onclick="mostrarTab(0)">Introducción</button>
+            <button class="nav-tab" onclick="mostrarTab(1)">Posiciones de Garante</button>
+            <button class="nav-tab" onclick="mostrarTab(2)">Deberes Negativos</button>
+            <button class="nav-tab" onclick="mostrarTab(3)">Deberes Positivos</button>
+            <button class="nav-tab" onclick="mostrarTab(4)">Instituciones IO</button>
+            <button class="nav-tab" onclick="mostrarTab(5)">Conocimientos Especiales</button>
+            <button class="nav-tab" onclick="mostrarTab(6)">Evaluación</button>
+        </div>
+
+        <div class="content">
+            <!-- TAB 1: INTRODUCCIÓN -->
+            <div class="tab-content active">
+                <div class="section">
+                    <h2>🎯 ¿Qué es la Imputación Objetiva?</h2>
+                    
+                    <div class="definicion">
+                        <strong>Definición:</strong> La teoría de la imputación objetiva identifica los "prejuicios" o criterios que utilizamos al interpretar las normas penales y atribuir sentido a las conductas de las personas.
+                    </div>
+
+                    <div class="concepto-clave">
+                        <h4>💡 Concepto Fundamental</h4>
+                        <p>Las conductas interesan al derecho penal en cuanto <strong>expresan un sentido o significado</strong>. El contexto social completa ese sentido y lo hace vinculante para la sociedad.</p>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h2>🏗️ Estructura de la Teoría</h2>
+                    
+                    <div class="esquema">
+                        <div class="nivel-1">📊 DOS PILARES FUNDAMENTALES:</div>
+                        
+                        <div class="nivel-2">1️⃣ TEORÍA DE LAS POSICIONES DE GARANTE</div>
+                        <div class="nivel-3">• Deberes Negativos (no dañar)</div>
+                        <div class="nivel-3">• Deberes Positivos (institucionales)</div>
+                        
+                        <div class="nivel-2">2️⃣ INSTITUCIONES DE IMPUTACIÓN OBJETIVA</div>
+                        <div class="nivel-3">A) Imputación de Conductas:</div>
+                        <div class="nivel-3" style="margin-left: 60px;">- Riesgo permitido</div>
+                        <div class="nivel-3" style="margin-left: 60px;">- Principio de confianza</div>
+                        <div class="nivel-3" style="margin-left: 60px;">- Prohibición de regreso</div>
+                        <div class="nivel-3" style="margin-left: 60px;">- Imputación a la víctima</div>
+                        
+                        <div class="nivel-3">B) Imputación de Resultados:</div>
+                        <div class="nivel-3" style="margin-left: 60px;">- Concurrencia de riesgos</div>
+                        <div class="nivel-3" style="margin-left: 60px;">- Confluencia de riesgos</div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h2>🔑 Principio Liberal Básico</h2>
+                    
+                    <div class="importante">
+                        <strong>⚠️ "NO TODOS SOMOS RESPONSABLES DE TODO"</strong>
+                        <p style="margin-top: 10px;">Este principio hace necesaria la teoría de las posiciones de garante.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TABS 2-4 ya proporcionados anteriormente -->
+            
+        </div>
+    </div>
+
+    <script>
+        function mostrarTab(index) {
+            const tabs = document.querySelectorAll('.nav-tab');
+            const contents = document.querySelectorAll('.tab-content');
+            
+            tabs.forEach(tab => tab.classList.remove('active'));
+            contents.forEach(content => content.classList.remove('active'));
+            
+            tabs[index].classList.add('active');
+            contents[index].classList.add('active');
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function toggleRespuesta(id) {
+            const respuesta = document.getElementById(id);
+            if (respuesta.style.display === 'none' || respuesta.style.display === '') {
+                respuesta.style.display = 'block';
+            } else {
+                respuesta.style.display = 'none';
+            }
+        }
+
+        function verificarRespuesta(preguntaNum, opcionNum, esCorrecta) {
+            const opciones = document.querySelectorAll(`[data-pregunta="${preguntaNum}"]`);
+            opciones.forEach(op => {
+                op.style.pointerEvents = 'none';
+                if (op.dataset.opcion == opcionNum) {
+                    if (esCorrecta) {
+                        op.classList.add('correcta');
+                    } else {
+                        op.classList.add('incorrecta');
+                    }
+                }
+            });
+            
+            if (esCorrecta) {
+                const correctaEl = document.querySelector(`[data-pregunta="${preguntaNum}"][data-correcta="true"]`);
+                if (correctaEl && correctaEl.dataset.opcion != opcionNum) {
+                    correctaEl.classList.add('correcta');
+                }
+            } else {
+                const correctaEl = document.querySelector(`[data-pregunta="${preguntaNum}"][data-correcta="true"]`);
+                if (correctaEl) {
+                    correctaEl.classList.add('correcta');
+                }
+            }
+            
+            document.getElementById(`explicacion${preguntaNum}`).style.display = 'block';
+        }
+    </script>
+</body>
+</html>  <!-- PARTE 1: AGREGAR DESPUÉS DEL TAB DE INTRODUCCIÓN -->
+
+<!-- TAB 2: POSICIONES DE GARANTE -->
+<div class="tab-content">
+    <div class="section">
+        <h2>⚖️ Teoría de las Posiciones de Garante</h2>
+        
+        <div class="concepto-clave">
+            <h4>¿Qué es una Posición de Garante?</h4>
+            <p>Es la situación jurídica en que una persona se hace <strong>competente</strong> de evitar un determinado suceso dañoso.</p>
+        </div>
+
+        <div class="diagrama">
+            <div class="caja-concepto">¿Le concernía evitarlo?</div>
+            <div class="flecha">⬇️</div>
+            <div class="caja-concepto">Posición de Garante</div>
+            <div class="flecha">⬇️</div>
+            <div class="caja-concepto">Primer paso de imputación</div>
+        </div>
+
+        <div class="importante">
+            <strong>⚠️ NOTA:</strong> Que alguien sea competente NO significa que sea autor del delito. Es solo el PRIMER PASO.
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>📋 Tres Fuentes Principales</h2>
+        
+        <div class="card">
+            <h3>1️⃣ DEBERES NEGATIVOS</h3>
+            <p><strong>Principio:</strong> Neminem Laedere (No dañar a otro)</p>
+            <p><strong>Fundamento:</strong> Libertad de comportamiento / Responsabilidad por consecuencias</p>
+            <div class="nivel-3">
+                <strong>Incluye:</strong>
+                <ul>
+                    <li>Deberes de aseguramiento y salvamento</li>
+                    <li>Injerencia</li>
+                    <li>Asunción de deberes</li>
+                    <li>Impedir autolesiones</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>2️⃣ DEBERES POSITIVOS (Institucionales)</h3>
+            <p><strong>Fundamento:</strong> Instituciones indispensables para identidad social</p>
+            <div class="nivel-3">
+                <strong>Incluye:</strong>
+                <ul>
+                    <li>Relación paternofilial</li>
+                    <li>Matrimonio (discutido)</li>
+                    <li>Confianza especial</li>
+                    <li>Deberes estatales mínimos</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>3️⃣ DEBERES DE SOLIDARIDAD</h3>
+            <p><strong>Características:</strong> Excepcionales, solo vida inmediata, penas menores</p>
+            <p><strong>Ejemplo:</strong> Art. 494 Nº14 (omisión de socorro)</p>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>🔍 Diferencia Crucial</h2>
+        
+        <div class="ejemplo">
+            <h4>📌 Padre que Golpea al Hijo</h4>
+            <p>NO infringe deber negativo general (neminem laedere)</p>
+            <p>✅ Infringe <strong>deber positivo</strong> de institución paternofilial</p>
+            <p><em>La distinción NO es actuar/omitir, sino el FUNDAMENTO del deber</em></p>
+        </div>
+    </div>
+</div>
+
+<!-- TAB 3: DEBERES NEGATIVOS -->
+<div class="tab-content">
+    <div class="section">
+        <h2>🚫 Deberes Negativos: Neminem Laedere</h2>
+        
+        <div class="concepto-clave">
+            <h4>Fundamento</h4>
+            <p>Libertad de organizar la propia esfera → expectativa de NO producir outputs negativos para otros</p>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>1️⃣ Deberes de Aseguramiento y Salvamento</h2>
+        
+        <div class="card">
+            <h3>A) Aseguramiento: Configurar para NO dañar</h3>
+            
+            <div class="ejemplo">
+                <h4>📌 Ejemplos Cotidianos</h4>
+                <ul class="lista-puntos">
+                    <li>🏠 <strong>Propietario:</strong> Techo no debe caer sobre transeúntes</li>
+                    <li>🚗 <strong>Auto en pendiente:</strong> Tomar medidas para que no ruede</li>
+                    <li>🐕 <strong>Dueño de perro:</strong> Detenerlo si va a morder</li>
+                    <li>🏭 <strong>Fabricante:</strong> Productos no peligrosos</li>
+                </ul>
+            </div>
+
+            <div class="importante">
+                <h4>⚖️ Caso Real: Incendio Hostal Punta Arenas (2008)</h4>
+                <p><strong>Hechos:</strong> Modificaciones eléctricas sin seguridad → incendio → 10 muertos</p>
+                <p><strong>Posición:</strong> Deber de aseguramiento</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>B) Salvamento: Revocar cursos lesivos YA iniciados</h3>
+            
+            <div class="ejemplo">
+                <h4>📌 Arbusto Venenoso</h4>
+                <p><strong>Aseguramiento:</strong> Proteger arbusto de niños</p>
+                <p><strong>Salvamento:</strong> Cuando veneno YA entró → administrar antídoto</p>
+                <p><em>"Salvamento = aseguramiento frente a daños ulteriores"</em></p>
+            </div>
+
+            <div class="ejemplo">
+                <h4>📌 Perro con Enfermedad Peligrosa</h4>
+                <p>Dueño DEBE ponerlo en cuarentena</p>
+                <p>Si no lo hace → responsable si contagia</p>
+                <p><strong>Consecuencia:</strong> Terceros pueden encerrarlo (estado de necesidad)</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>2️⃣ La Injerencia</h2>
+        
+        <div class="definicion">
+            <strong>Definición:</strong> Posición de garante por conducta previa que expandió la esfera propia a costa de la esfera ajena
+        </div>
+
+        <div class="card">
+            <h3>Caso CLARO: Conducta Antijurídica</h3>
+            <p>✅ SI la conducta previa es antijurídica → HAY injerencia</p>
+            <div class="ejemplo">
+                <p><strong>Ejemplo:</strong> Conducir ebrio + atropellar = competente por lesiones</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>Caso DISCUTIDO: Conducta Ajustada a Derecho</h3>
+            
+            <div class="concepto-clave">
+                <h4>Regla: Riesgo Permitido ESPECIAL</h4>
+                <p>Hay injerencia si crea riesgo especial (excede mínimo indispensable)</p>
+                <p><strong>Ejemplos:</strong> conducción vehículos, medicamentos</p>
+                <p><strong>Se reconocen por:</strong> obligación de seguros o regulación densa</p>
+            </div>
+
+            <div class="diagrama">
+                <h4 style="color: #1e3c72;">Fórmula Clave</h4>
+                <div class="caja-concepto">INJERENCIA</div>
+                <div style="font-size: 2em; color: #667eea;">×</div>
+                <div class="caja-concepto">RIESGO ESPECIAL PERMITIDO</div>
+                <div class="flecha">⬇️</div>
+                <div class="caja-concepto">Responsabilidad por NO auxiliar</div>
+            </div>
+
+            <div class="ejemplo">
+                <h4>📌 Atropello sin Culpa</h4>
+                <p><strong>Conducción correcta + atropello:</strong></p>
+                <p>❌ NO responde por impacto directo</p>
+                <p>✅ DEBE auxiliar (injerencia modulada)</p>
+                <p>⚠️ Si no auxilia y muere → responde por omisión</p>
+            </div>
+
+            <div class="importante">
+                <h4>⚖️ Excepción: Legítima Defensa</h4>
+                <p>NO hay deber de auxiliar al agresor después</p>
+                <p>PERO SÍ en estado de necesidad</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>3️⃣ Asunción de Deberes</h2>
+        
+        <div class="definicion">
+            <strong>Clave:</strong> Competencia por "compensación de empeoramiento" del aseguramiento del bien
+        </div>
+
+        <div class="card">
+            <h3>Dos Requisitos Esenciales</h3>
+            
+            <div class="diagrama">
+                <div class="caja-concepto">1. Manifestar compromiso</div>
+                <div class="flecha">+</div>
+                <div class="caja-concepto">2. Abandono efectivo de otras medidas</div>
+                <div class="flecha">=</div>
+                <div class="caja-concepto">ASUNCIÓN</div>
+            </div>
+
+            <div class="importante">
+                <h4>💡 Momento del "Precipicio"</h4>
+                <p>Siempre hay momento donde bien es "arrojado" y competencia lo "recoge"</p>
+                <p><strong>Sin empeoramiento = NO hay asunción</strong></p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>Ejemplos Prácticos</h3>
+            
+            <div class="ejemplo">
+                <h4>📌 Ayudar a Cruzar la Calle</h4>
+                <p>Persona con discapacidad visual abandona usar metro</p>
+                <p>Confía en ayuda ofrecida</p>
+                <p>→ Nace competencia por asunción</p>
+            </div>
+
+            <div class="ejemplo">
+                <h4>📌 Médico: Calle vs. Bosque</h4>
+                <p><strong>En calle:</strong> Si su intervención impidió llamar a otro médico → debe completar</p>
+                <p><strong>En bosque:</strong> Si nadie lo habría ayudado → solo omisión de socorro</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>Límites</h3>
+            <ul class="lista-puntos">
+                <li>❌ NO hay si obtuvo compromiso por coacción/engaño</li>
+                <li>📏 Solo medios acordados ex ante</li>
+                <li>🚫 NO surge de tareas ilícitas</li>
+                <li>⏹️ Cesa al realizar la prestación</li>
+                <li>🔄 Liberación al ser reemplazado</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>4️⃣ Impedir Autolesiones</h2>
+        
+        <div class="concepto-clave">
+            <p>Tres situaciones donde hay deber negativo de impedir:</p>
+        </div>
+
+        <div class="card">
+            <h3>Situación 1: Deberes Específicos (ej: empleador)</h3>
+            <div class="ejemplo">
+                <h4>📌 Trabajador sin Casco</h4>
+                <p>Trabajador se niega a usar casco y se lesiona</p>
+                <p>Empleador NO queda liberado automáticamente</p>
+                <p>Debe impedir ingreso sin casco</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>Situación 2: Víctima No Plenamente Responsable</h3>
+            <div class="ejemplo">
+                <p>A amenaza a B → B en pánico organiza su muerte</p>
+                <p>A debe evitarlo (contribuyó al déficit de responsabilidad)</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>Situación 3: Consentimiento Ineficaz</h3>
+            <div class="ejemplo">
+                <p>Persona deprimida pide arma para suicidarse</p>
+                <p>NO hay consentimiento eficaz</p>
+                <p>Quien entrega es garante (Art. 393)</p>
+            </div>
+        </div>
+    </div>
+</div> <!-- TAB 4: DEBERES POSITIVOS -->
+<div class="tab-content">
+    <div class="section">
+        <h2>➕ Deberes Positivos: Institucionales</h2>
+        
+        <div class="concepto-clave">
+            <h4>Diferencia Fundamental</h4>
+            <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
+                <tr style="background: #667eea; color: white;">
+                    <th style="padding: 10px;">NEGATIVOS</th>
+                    <th style="padding: 10px;">POSITIVOS</th>
+                </tr>
+                <tr>
+                    <td style="padding: 10px; border: 1px solid #ddd;">Institución de libertad (poco específica)</td>
+                    <td style="padding: 10px; border: 1px solid #ddd;">Instituciones específicas fundamentales</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="definicion">
+            <strong>Institución:</strong> Forma de relación duradera, jurídicamente reconocida, NO disponible para personas singulares, que contribuye a constituirlas.
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>1️⃣ Relación Paternofilial</h2>
+        
+        <div class="card">
+            <h3>Fundamento</h3>
+            <p>Deber positivo de padres (o sustitutos) de cuidar hijos menores respecto de bienes personales e instrumentales.</p>
+            
+            <div class="importante">
+                <h4>🔍 Características</h4>
+                <ul class="lista-puntos">
+                    <li><strong>Base compleja:</strong> Biológica, afectiva, espiritual, legal</li>
+                    <li><strong>Ámbito amplio:</strong> Alimentación, educación, atención médica, protección</li>
+                    <li><strong>Bienes:</strong> Personales (vida, integridad, indemnidad sexual) + instrumentales (propiedad)</li>
+                    <li><strong>Límite:</strong> Solo estándar MÍNIMO (no óptimo)</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>¿Qué incluye el Estándar Mínimo?</h3>
+            
+            <div class="diagrama">
+                <div style="display: flex; justify-content: space-around; flex-wrap: wrap;">
+                    <div style="flex: 1; min-width: 200px; margin: 10px;">
+                        <div style="background: #28a745; color: white; padding: 15px; border-radius: 10px;">
+                            <strong>✅ SÍ INCLUIDO</strong>
+                            <ul style="text-align: left; margin-top: 10px;">
+                                <li>Control recién nacido</li>
+                                <li>Alimentación básica</li>
+                                <li>Protección peligros graves</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div style="flex: 1; min-width: 200px; margin: 10px;">
+                        <div style="background: #dc3545; color: white; padding: 15px; border-radius: 10px;">
+                            <strong>❌ NO INCLUIDO</strong>
+                            <ul style="text-align: left; margin-top: 10px;">
+                                <li>Especialista en otro continente</li>
+                                <li>Controles periódicos lactante (discutible)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>Diferencia con Deber Negativo</h3>
+            
+            <div class="importante">
+                <p><strong>Quien ayuda a padre/madre a matar hijo:</strong> Realiza injusto DIFERENTE</p>
+                <p><strong>Reconocimiento legal:</strong> Art. 390 + Art. 391 Nº2</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>Aspectos Importantes</h3>
+            
+            <div class="concepto-clave">
+                <h4>📌 Delegación</h4>
+                <p>NO necesario cuidar personalmente, PERO delegación solo libera si cumple "principio de confianza"</p>
+            </div>
+
+            <div class="concepto-clave">
+                <h4>📌 Alcance Amplio</h4>
+                <p>Incluye impedir conductas lesivas del otro cónyuge + medidas para que heridas no se agraven</p>
+                <p><em>NO amparado por Art. 17</em></p>
+            </div>
+
+            <div class="concepto-clave">
+                <h4>📌 Temporalidad</h4>
+                <p><strong>¿Desde cuándo?</strong> Discutible: ¿concepción o nacimiento?</p>
+                <p><strong>¿Hasta cuándo?</strong> Independización o mayoría de edad</p>
+            </div>
+
+            <div class="concepto-clave">
+                <h4>📌 Ambos Padres</h4>
+                <p>Alcanza también al que NO ejerce cuidado personal</p>
+                <p>Puede extenderse a no reconocido si se estableció filiación</p>
+            </div>
+
+            <div class="importante">
+                <h4>⚠️ NO Recíproco</h4>
+                <p>NO existe posición de garante de hijos respecto de padres solo por relación paternofilial</p>
+                <p>Solo deber de socorro (Art. 223 CC)</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>2️⃣ El Matrimonio</h2>
+        
+        <div class="importante">
+            <h4>⚠️ ESTATUS DISCUTIDO EN CHILE</h4>
+            <p>Cuestionable si sigue siendo institución indispensable desde Ley Nº 19.947 (divorcio por cese de convivencia)</p>
+        </div>
+
+        <div class="card">
+            <h3>Argumentos en Debate</h3>
+            
+            <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+                <div style="flex: 1; min-width: 250px;">
+                    <div style="background: #d4edda; padding: 15px; border-radius: 10px; border-left: 4px solid #28a745;">
+                        <h4 style="color: #155724;">A FAVOR</h4>
+                        <p>Compromiso solemne de hacerse cargo en toda circunstancia</p>
+                    </div>
+                </div>
+                <div style="flex: 1; min-width: 250px;">
+                    <div style="background: #f8d7da; padding: 15px; border-radius: 10px; border-left: 4px solid #dc3545;">
+                        <h4 style="color: #721c24;">EN CONTRA</h4>
+                        <ul style="margin-top: 10px;">
+                            <li>Ley permite distanciamiento unilateral</li>
+                            <li>Sociedad se estructura menos sobre matrimonio</li>
+                            <li>Alemania: termina con separación definitiva</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>Si Existe: Diferencias con Relación Paternofilial</h3>
+            
+            <div class="concepto-clave">
+                <h4>1️⃣ Patrimonio</h4>
+                <p>❌ NO hay deber de custodiar patrimonio del otro</p>
+                <p>✅ Solo patrimonio común</p>
+            </div>
+
+            <div class="concepto-clave">
+                <h4>2️⃣ Plano de Igualdad</h4>
+                <p>NUNCA puede extenderse a contrariar voluntad del otro</p>
+                <ul style="margin-top: 10px;">
+                    <li>❌ NO impedir autolesión autónoma</li>
+                    <li>❌ NO impedir que cometa delitos</li>
+                    <li>✅ Solo evitar lesiones personalísimas NO aceptadas autorresponsablemente</li>
+                </ul>
+            </div>
+
+            <div class="ejemplo">
+                <h4>📌 Caso Complejo: Intento de Suicidio</h4>
+                <p><strong>Situación:</strong> Cónyuge intenta suicidio, pierde conciencia pero vive</p>
+                <p><strong>Regla general:</strong> ❌ NO hay deber de intervenir (prima autorresponsabilidad)</p>
+                <p><strong>Excepciones donde SÍ hay deber:</strong></p>
+                <ul>
+                    <li>Razones para presumir cambio de opinión</li>
+                    <li>Decisión no suficientemente autónoma (error sustancial)</li>
+                </ul>
+                <p><em>PERO: SIN coaccionar voluntad</em></p>
+            </div>
+
+            <div class="concepto-clave">
+                <h4>3️⃣ Independencia del Afecto</h4>
+                <p>Deberes subsisten aunque no se lleven bien</p>
+                <p>Matrimonio = institución social (NO solo relación personal)</p>
+                <p>Ausencia de afecto NO opera como atenuante</p>
+            </div>
+
+            <div class="importante">
+                <h4>📋 Unión Civil</h4>
+                <p>Ley Nº 20.830: Acuerdo de unión civil = relación sustitutiva del matrimonio</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>3️⃣ Confianza Especial</h2>
+        
+        <div class="definicion">
+            <strong>Fundamento:</strong> Doctrina de actos propios<br>
+            <em>"Venire contra factum proprium non valet"</em><br>
+            (No vale ir contra los propios actos)
+        </div>
+
+        <div class="card">
+            <h3>Dos Dimensiones</h3>
+            
+            <div class="diagrama">
+                <div class="caja-concepto">1. Confianza Generada</div>
+                <div style="padding: 10px; color: #666;">Conducta previa genera confianza de que se encargará</div>
+                <div style="margin: 20px 0; font-size: 2em; color: #667eea;">+</div>
+                <div class="caja-concepto">2. Coherencia Exigida</div>
+                <div style="padding: 10px; color: #666;">No solo beneficios, también desventajas</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>Confianza Especial vs. Asunción</h3>
+            
+            <table style="width: 100%; border-collapse: collapse;">
+                <tr style="background: #667eea; color: white;">
+                    <th style="padding: 12px; border: 1px solid #ddd;">ASUNCIÓN</th>
+                    <th style="padding: 12px; border: 1px solid #ddd;">CONFIANZA ESPECIAL</th>
+                </tr>
+                <tr>
+                    <td style="padding: 10px; border: 1px solid #ddd;"><strong>Fundamento:</strong> Compensar pérdida de protección</td>
+                    <td style="padding: 10px; border: 1px solid #ddd;"><strong>Fundamento:</strong> No comportarse contradictoriamente</td>
+                </tr>
+                <tr>
+                    <td style="padding: 10px; border: 1px solid #ddd;">✅ Necesaria desactivación de medidas</td>
+                    <td style="padding: 10px; border: 1px solid #ddd;">❌ NO necesaria desactivación</td>
+                </tr>
+                <tr>
+                    <td style="padding: 10px; border: 1px solid #ddd;">⚡ Ayuda en emergencia</td>
+                    <td style="padding: 10px; border: 1px solid #ddd;">📅 Organización para futuro</td>
+                </tr>
+            </table>
+
+            <div class="importante" style="margin-top: 20px;">
+                <h4>💡 "Competencia Practicada"</h4>
+                <p>Persona se vuelve competente porque PREVIAMENTE actúa como quien ES competente</p>
+                <p><strong>Esta competencia practicada determina los límites del deber</strong></p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>Ejemplos Típicos</h3>
+            
+            <div class="ejemplo">
+                <h4>📌 Médico vs. Vecino</h4>
+                <p><strong>CONFIANZA ESPECIAL:</strong> Médico abre consulta → garante de pacientes FUTUROS</p>
+                <p><strong>ASUNCIÓN:</strong> Vecino transporta accidentado → garante si desactivó otras opciones</p>
+            </div>
+
+            <div class="ejemplo">
+                <h4>📌 Comunidades de Peligro</h4>
+                <p>Grupo de andinistas en expedición peligrosa</p>
+                <p>Se unen ANTES del peligro para ayudarse mutuamente</p>
+                <p>Adoptan medidas ex ante → garantes recíprocos</p>
+            </div>
+
+            <div class="ejemplo">
+                <h4>📌 Organizaciones que Suplen al Estado</h4>
+                <p>Bomberos, Hogar de Cristo (praxis establecida)</p>
+                <p>Pueden negarse a recibir nuevos por falta de capacidad</p>
+                <p>PERO NO pueden dejar en calle a los ya aceptados</p>
+            </div>
+
+            <div class="importante">
+                <h4>❌ NO Genera Confianza Especial</h4>
+                <p>Simple comunidad de techo</p>
+                <p><strong>Se necesita:</strong></p>
+                <ol style="margin-top: 10px;">
+                    <li>Oferta consistente de ayuda para necesidades futuras</li>
+                    <li>Adopción anticipada de medios/resguardos</li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>Contenido de los Deberes</h3>
+            
+            <div class="concepto-clave">
+                <p><strong>Límite:</strong> Dentro de "competencia practicada" y NO más allá</p>
+                <p><strong>Solo:</strong> Ayuda previsiblemente capaz de efecto adecuado</p>
+                <p><em>NO cualquier actividad fácticamente posible</em></p>
+            </div>
+
+            <div class="ejemplo">
+                <h4>📌 Médico Intensivista</h4>
+                <p>NO obligado a cualquier procedimiento que prolongue horas la vida</p>
+                <p>Salvo que tenga sentido para recuperación ulterior</p>
+                <p><em>Valoraciones trascienden autonomía contractual</em></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>4️⃣ Deberes Estatales Mínimos</h2>
+        
+        <div class="definicion">
+            <strong>Concepto:</strong> Tareas irrenunciables del Estado = prestaciones que DEBE realizar independientemente de capacidad económica
+        </div>
+
+        <div class="importante">
+            <h4>⚠️ Criterio Restrictivo</h4>
+            <p>La dificultad debe llevar a RESTRINGIR lo irrenunciable, no a prescindir de garantía penal</p>
+        </div>
+
+        <div class="card">
+            <h3>Las 4 Tareas Irrenunciables</h3>
+            
+            <div class="concepto-clave">
+                <h4>1️⃣ Labor Asistencial Elemental</h4>
+                <p>Protección frente a peligros graves no enfrentables individualmente</p>
+                <div style="margin-top: 10px; padding: 10px; background: white; border-radius: 8px;">
+                    <p><strong>✅ Incluye:</strong> Catástrofes, erupciones, epidemias, peligros ambientales graves</p>
+                    <p><strong>❌ NO incluye:</strong> Enfermedades comunes, emergencias menores</p>
+                </div>
+            </div>
+
+            <div class="ejemplo">
+                <h4>📌 Caso Real: Terremoto 27-F (2010)</h4>
+                <p><strong>Hechos:</strong> Terremoto 8.8 + tsunami → 156 muertos del tsunami</p>
+                <p><strong>Problema:</strong> Errores en alertas de tsunami</p>
+                <p><strong>Imputación:</strong> 7 funcionarios por cuasidelito homicidio (74 muertes)</p>
+                <p><strong>Resultado:</strong> 1 condenado, 6 suspensión condicional</p>
+                <p><strong>Posición de garante:</strong> Labor asistencial elemental del Estado</p>
+            </div>
+
+            <div class="concepto-clave">
+                <h4>2️⃣ Relaciones Especiales de Sujeción</h4>
+                <p>Sujeción al poder estatal sin alternativas</p>
+                <div style="margin-top: 10px; padding: 10px; background: white; border-radius: 8px;">
+                    <p><strong>Ejemplos:</strong> Servicio militar, centros de menores, cárceles</p>
+                    <p><strong>Extensión depende de:</strong></p>
+                    <ul>
+                        <li>Situaciones generales (accidentes) → deber de auxiliar</li>
+                        <li>Relaciones amplias → provisión alimento/vestuario</li>
+                        <li>Estándar: definido por ordenamiento (NO solo mínimo)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="ejemplo">
+                <h4>📌 Caso Real: Incendio Cárcel San Miguel (2010)</h4>
+                <p><strong>Hechos:</strong> Disputa bandas → incendio → 81 muertos</p>
+                <p><strong>Falencias:</strong> Escasez guardias, tardanza alerta, sin redes húmedas, hacinamiento</p>
+                <p><strong>Sentencia:</strong> ABSOLVIÓ a todos (investigación NO contra personas competentes)</p>
+                <p><strong>Lección:</strong> Importancia de determinar correctamente quién es garante</p>
+            </div>
+
+            <div class="importante">
+                <h4>🤔 Problema: Huelga de Hambre de Interno</h4>
+                <p><strong>Regla:</strong> Prima autonomía (NO impedir autolesión)</p>
+                <p><strong>Excepciones:</strong> Cambio voluntad o decisión no autónoma</p>
+                <p><strong>PERO:</strong> Siempre SIN coacción estatal</p>
+            </div>
+
+            <div class="concepto-clave">
+                <h4>3️⃣ Seguridad Interior y Exterior</h4>
+                <p>Funciones principales según origen del Estado</p>
+                <div style="margin-top: 10px; padding: 10px; background: white; border-radius: 8px;">
+                    <p><strong>Policía:</strong> Resguardar orden público y proteger ciudadanos</p>
+                    <p><strong>Militares:</strong> Seguridad exterior conforme Constitución/leyes</p>
+                    <p><em>NO confundir con solidaridad mínima (Art. 494 Nº14)</em></p>
+                </div>
+            </div>
+
+            <div class="concepto-clave">
+                <h4>4️⃣ Instituciones del Estado de Derecho</h4>
+                <p>Solo lo ESENCIAL para mantener el sistema</p>
+                <div style="margin-top: 10px; padding: 10px; background: white; border-radius: 8px;">
+                    <ul>
+                        <li>Régimen republicano</li>
+                        <li>Soberanía nacional</li>
+                        <li>Administración de justicia</li>
+                        <li>Principio de juridicidad</li>
+                        <li><strong>En Chile:</strong> Legalidad gasto público (Art. 32 Nº20 Constitución)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>¿Quiénes son Garantes?</h3>
+            
+            <div class="importante">
+                <h4>🎯 Criterio de Determinación</h4>
+                <p>Depende de:</p>
+                <ol>
+                    <li>Estructura jurídica del servicio</li>
+                    <li>Funcionamiento real</li>
+                    <li>Norma que regula DIRECTA y ESPECÍFICAMENTE la tarea</li>
+                </ol>
+                <p><strong>Complementar con:</strong> Instituciones de IO de conductas</p>
+            </div>
+
+            <div class="concepto-clave">
+                <h4>⚠️ Distinción Crucial</h4>
+                <p>NO todo deber funcionario = deber de tarea estatal irrenunciable</p>
+                <p><strong>Ejemplo:</strong> Denunciar irregularidades NO es tarea irrenunciable → NO da posición de garante</p>
+            </div>
+
+            <div class="importante">
+                <h4>💡 Superposición Común</h4>
+                <p>Funcionarios pueden ser garantes por OTROS fundamentos</p>
+                <p><strong>Ejemplo:</strong> Enfermero hospital público → garante por CONFIANZA ESPECIAL (no deber estatal)</p>
+                <p><strong>Frecuente:</strong> Deberes estatales + confianza especial</p>
+            </div>
+        </div>
+    </div>
+</div>
